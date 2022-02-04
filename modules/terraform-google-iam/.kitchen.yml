@@ -1,0 +1,112 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+provisioner:
+  name: terraform
+
+platforms:
+  - name: local
+
+suites:
+  # NOTE: In any test suite you can provide TF_VAR_roles=1 to test
+  #       with only 1 role in bindings. This way you can `converge` and `verify`
+  #       multiple times with roles being 2 and 1 to test how the module
+  #       behaves on configuration updates. This approach is used in the CI
+  #       `/build/int.cloudbuild.yaml`
+
+  # Test all IAM modules in `additive` mode
+  - name: additive
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/additive
+    verifier:
+      name: terraform
+      systems:
+        - name: additive
+          backend: local
+    provisioner:
+      name: terraform
+
+  # Test all IAM modules in `authoritative` mode
+  - name: authoritative
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/authoritative
+    verifier:
+      name: terraform
+      systems:
+        - name: authoritative
+          backend: local
+    provisioner:
+      name: terraform
+
+  # Test projects IAM on how the module behaves
+  # in static mode (when all resources are statically defined)
+  # and in dynamic mode (when module params are obtained asynchronously
+  # from other resources)
+  # This suite supports specifying 1 to 3 for TF_VAR_roles
+  - name: static-and-dynamic
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/static-and-dynamic
+    verifier:
+      name: terraform
+      systems:
+        - name: static-and-dynamic
+          backend: local
+    provisioner:
+      name: terraform
+
+  - name: member-iam
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/member-iam
+    verifier:
+      name: terraform
+      systems:
+        - name: member-iam
+          backend: local
+    provisioner:
+      name: terraform
+
+  - name: billing-iam
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/billing-iam
+    verifier:
+      name: terraform
+      systems:
+        - name: billing-iam
+          backend: local
+    provisioner:
+      name: terraform
+
+  - name: custom-role
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/custom-role
+    verifier:
+      name: terraform
+      systems:
+        - name: custom-role
+          backend: local
+    provisioner:
+      name: terraform
