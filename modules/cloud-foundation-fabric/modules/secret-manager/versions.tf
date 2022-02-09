@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-# To create the foundations project to store terraform state file
-module "nhi-nci-foundations" {
-  source               = "../../modules/nhi-nci/foundations"
-
-  billing_account_id   = "01CB51-83915C-46BCF2"
-  root_node            = "folders/171339314200" # nhi-nci-poc
-  prefix               = "nhi-nci"
-  iam_terraform_owners = ["user:farrukhhashmi@google.com"]
+terraform {
+  required_version = ">= 0.12.6"
 }

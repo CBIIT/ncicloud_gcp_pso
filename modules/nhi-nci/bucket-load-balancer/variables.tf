@@ -14,12 +14,32 @@
  * limitations under the License.
  */
 
-# To create the foundations project to store terraform state file
-module "nhi-nci-foundations" {
-  source               = "../../modules/nhi-nci/foundations"
+variable "project_id" {
+  description = "The GCP Project ID."
+  type        = string
+}
 
-  billing_account_id   = "01CB51-83915C-46BCF2"
-  root_node            = "folders/171339314200" # nhi-nci-poc
-  prefix               = "nhi-nci"
-  iam_terraform_owners = ["user:farrukhhashmi@google.com"]
+variable "bucket_name" {
+  description = "Backend GCS bucket name."
+  type        = string
+}
+variable "ip_address" {
+  description = "Public IP address."
+  type        = string
+}
+
+variable "rule_name" {
+  description = "Global forwarding rule name."
+  type        = string
+}
+
+variable "domain" {
+  description = "Domain name."
+  type        = string
+}
+
+variable "enable_cdn" {
+  description = "Enable CDN."
+  type        = string
+  default     = true
 }

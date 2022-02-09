@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-# To create the foundations project to store terraform state file
-module "nhi-nci-foundations" {
-  source               = "../../modules/nhi-nci/foundations"
+locals {
+  project_id  = "nhi-nci-lb-project-poc-dev"
+  rule_name   = "lb-poc"
+  bucket_name = "nih-nic-content-bucket-poc"
+  ip_address  = "35.244.139.79"
+  domain      = "foo.endpoints.nhi-nci-lb-project-poc-dev.cloud.goog"
+}
 
-  billing_account_id   = "01CB51-83915C-46BCF2"
-  root_node            = "folders/171339314200" # nhi-nci-poc
-  prefix               = "nhi-nci"
-  iam_terraform_owners = ["user:farrukhhashmi@google.com"]
+module "poc-lb" {
+  source      = "../../modules/nhi-nci/bucket-load-balancer"
+  project_id  = local.project_id
+  rule_name   = local.rule_name
+  bucket_name = local.bucket_name
+  ip_address  = local.ip_address
+  domain      = local.domain
 }
