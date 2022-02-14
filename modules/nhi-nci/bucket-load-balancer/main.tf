@@ -14,65 +14,56 @@
  * limitations under the License.
  */
 
-locals {
-  project_id  = var.project_id
-  rule_name   = var.rule_name
+resource "google_compute_backend_bucket" "bucket-backend" {
+  project     = var.project_id
+  name        = "${var.bucket_name}-backend"
   bucket_name = var.bucket_name
-  ip_address  = var.ip_address
-  domain      = var.domain
   enable_cdn  = var.enable_cdn
 }
 
-resource "google_compute_backend_bucket" "bucket-backend" {
-  project     = local.project_id
-  name        = "${local.bucket_name}-backend"
-  bucket_name = local.bucket_name
-  enable_cdn  = local.enable_cdn
-}
-
 resource "google_compute_global_forwarding_rule" "rule" {
-  project               = local.project_id
-  name                  = local.rule_name
+  project               = var.project_id
+  name                  = var.rule_name
   target                = google_compute_target_https_proxy.proxy.id
   port_range            = "443"
-  ip_address            = local.ip_address
+  ip_address            = var.ip_address
   load_balancing_scheme = "EXTERNAL"
 }
 
 resource "google_compute_target_https_proxy" "proxy" {
-  project          = local.project_id
-  name             = "${local.rule_name}-proxy"
+  project          = var.project_id
+  name             = "${var.rule_name}-proxy"
   url_map          = google_compute_url_map.url-map.id
   ssl_certificates = [google_compute_ssl_certificate.tls.id]
 }
 
 resource "google_compute_url_map" "url-map" {
-  project         = local.project_id
-  name            = "${local.rule_name}-url-map"
+  project         = var.project_id
+  name            = "${var.rule_name}-url-map"
   default_service = google_compute_backend_bucket.bucket-backend.id
   host_rule {
-    hosts        = [local.domain]
-    path_matcher = "${local.rule_name}-path-matcher"
+    hosts        = [var.domain]
+    path_matcher = "${var.rule_name}-path-matcher"
   }
 
   path_matcher {
-    name            = "${local.rule_name}-path-matcher"
+    name            = "${var.rule_name}-path-matcher"
     default_service = google_compute_backend_bucket.bucket-backend.id
   }
 }
 
 data "google_secret_manager_secret_version" "tls-private-key" {
-  project = local.project_id
-  secret  = "tls-private-key"
+  project = var.project_id
+  secret  = var.private-key-secret-name
 }
 
 data "google_secret_manager_secret_version" "tls-public-cert" {
-  project = local.project_id
-  secret  = "tls-public-cert"
+  project = var.project_id
+  secret  = var.public-cert-secret-name
 }
 
 resource "google_compute_ssl_certificate" "tls" {
-  project     = local.project_id
+  project     = var.project_id
   name_prefix = "nic-poc-cert-"
   private_key = data.google_secret_manager_secret_version.tls-private-key.secret_data
   certificate = data.google_secret_manager_secret_version.tls-public-cert.secret_data

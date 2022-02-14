@@ -26,5 +26,7 @@ module "poc-lb" {
 | bucket_name | Backend GCS bucket name. | `string` | ✓ |  |
 | ip_address | Public IP address. | `string` | ✓ |  |
 | domain | Domain name. | `string` | ✓ |  |
+| private-key-secret-name | Private key secret name. | `string` | ✓ |  |
+| public-cert-secret-name | Public certificate secret name. | `string` | ✓ |  |
 | enable_cdn | Enable CDN. | `string` |  | true |
 <!-- END TFDOC -->

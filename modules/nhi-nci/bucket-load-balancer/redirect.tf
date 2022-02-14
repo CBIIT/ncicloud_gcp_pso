@@ -15,8 +15,8 @@
  */
 
 resource "google_compute_url_map" "https_redirect" {
-  project = local.project_id
-  name    = "${local.rule_name}-https-redirect"
+  project = var.project_id
+  name    = "${var.rule_name}-https-redirect"
 
   default_url_redirect {
     https_redirect         = true
@@ -26,15 +26,15 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_target_http_proxy" "https_redirect" {
-  project = local.project_id
-  name    = "${local.rule_name}-http-proxy"
+  project = var.project_id
+  name    = "${var.rule_name}-http-proxy"
   url_map = google_compute_url_map.https_redirect.id
 }
 
 resource "google_compute_global_forwarding_rule" "https_redirect" {
-  project    = local.project_id
-  name       = "${local.rule_name}-lb-http"
+  project    = var.project_id
+  name       = "${var.rule_name}-lb-http"
   target     = google_compute_target_http_proxy.https_redirect.id
   port_range = "80"
-  ip_address = local.ip_address
+  ip_address = var.ip_address
 }

@@ -15,18 +15,22 @@
  */
 
 locals {
-  project_id  = "nhi-nci-lb-project-poc-dev"
-  rule_name   = "lb-poc"
-  bucket_name = "nih-nic-content-bucket-poc"
-  ip_address  = "35.244.139.79"
-  domain      = "foo.endpoints.nhi-nci-lb-project-poc-dev.cloud.goog"
+  project_id              = "nhi-nci-lb-project-poc-dev"
+  rule_name               = "lb-poc"
+  bucket_name             = "nih-nic-content-bucket-poc"
+  ip_address              = "35.244.139.79"
+  domain                  = "foo.endpoints.nhi-nci-lb-project-poc-dev.cloud.goog"
+  public-cert-secret-name = "tls-public-cert"
+  private-key-secret-name = "tls-private-key"
 }
 
 module "poc-lb" {
-  source      = "../../modules/nhi-nci/bucket-load-balancer"
-  project_id  = local.project_id
-  rule_name   = local.rule_name
-  bucket_name = local.bucket_name
-  ip_address  = local.ip_address
-  domain      = local.domain
+  source                  = "../../modules/nhi-nci/bucket-load-balancer"
+  project_id              = local.project_id
+  rule_name               = local.rule_name
+  bucket_name             = local.bucket_name
+  ip_address              = local.ip_address
+  domain                  = local.domain
+  public-cert-secret-name = local.public-cert-secret-name
+  private-key-secret-name = local.private-key-secret-name
 }

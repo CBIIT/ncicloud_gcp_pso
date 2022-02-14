@@ -43,3 +43,13 @@ variable "enable_cdn" {
   type        = string
   default     = true
 }
+
+variable "private-key-secret-name" {
+  description = "Private key secret name."
+  type        = string
+}
+
+variable "public-cert-secret-name" {
+  description = "Public certificate secret name."
+  type        = string
+}
