@@ -5,6 +5,7 @@ These sample scripts
 1. Create the foundations project to store terraform state files in GCS buckets.
 2. Create two projects with custom roles and GCP group binding.
 3. Create Global Load Balancer (GLB) with User Managed Certificate in Secret Manager.
+4. Create Log based metrics and alert for IAM roles/permissions and VPC/Subnet changes.
 
 ## Custom IAM Role Sample
 
@@ -99,6 +100,14 @@ Note: To create a stable, human-friendly mapping to IP address, a public DNS rec
     ```
 
 6. Execute the terraform commands below to create Load Balancer with private Key and Certificate stored in Secret Manager.
+   * Run `terraform init` command.
+   * Run `terraform plan` command and inspect all the GCP resources that will be created/udpated/destroyed.
+   * Run `terraform apply` command to apply changes to GCP.
+
+## Log Based Metrics & Alerts
+
+1. Go to `terraform\environments\log-based-alerts` directory by executing `cd terraform\environments\log-based-alerts` command.
+2. Execute the commands below to create Log based Alerts for IAM roles/permissions and VPC/Subnet changes.
    * Run `terraform init` command.
    * Run `terraform plan` command and inspect all the GCP resources that will be created/udpated/destroyed.
    * Run `terraform apply` command to apply changes to GCP.
