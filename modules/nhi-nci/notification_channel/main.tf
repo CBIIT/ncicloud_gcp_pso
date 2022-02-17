@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The GCP Project ID."
-  type        = string
-}
-
-variable "notification_channel_names" {
-  description = "Notification channel names."
-  type        = list(string)
+#Notification Channel
+resource "google_monitoring_notification_channel" "notification_channel" {
+  display_name = var.display_name
+  project      = var.project_id
+  type         = "email"
+  labels = {
+    email_address = var.email_address
+  }
 }

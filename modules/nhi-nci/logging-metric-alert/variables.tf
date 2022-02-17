@@ -19,7 +19,40 @@ variable "project_id" {
   type        = string
 }
 
+variable "metric_name" {
+  description = "Logging metric name."
+  type        = string
+}
+
+variable "metric_filter" {
+  description = "Logs filter which is used to match log entries."
+  type        = string
+}
+
+variable "metric_descriptor_display_name" {
+  description = "Metric descriptor display name."
+  type        = string
+  default     = null
+}
+
+variable "alert_policy_display_name" {
+  description = "Alert policy display name."
+  type        = string
+}
+
+variable "alert_policy_conditions_display_name" {
+  description = "Alert policy conditions display name."
+  type        = string
+  default     = null
+}
+
 variable "notification_channel_names" {
   description = "Notification channel names."
   type        = list(string)
+}
+
+variable "resource_type" {
+  description = "Resource type for filter."
+  type        = string
+  default     = "resource.type=\"global\""
 }

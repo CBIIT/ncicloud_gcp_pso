@@ -14,49 +14,31 @@
  * limitations under the License.
  */
 
-###
-#LOG BASED METRIC
-###
-resource "google_logging_metric" "logging_metric" {
-  name   = var.metric_name
-  filter = var.metric_filter
-  metric_descriptor {
-    metric_kind = "DELTA"
-    value_type  = "INT64"
-    unit        = "1"
-    display_name = var.metric_descriptor_display_name
-  }
-  project = var.project_id
+locals {
+  iam_metric_filter          = "protoPayload.methodName:\"setIamPolicy\" AND NOT protoPayload.authenticationInfo.principalEmail = (\"farrukhhashmi1@google.com\" OR \"hashmisf@gmail.com\")"
+  vpc_metric_filter          = "(protoPayload.methodName:\"compute.networks\" OR protoPayload.methodName:\"compute.subnetworks\") AND NOT (protoPayload.methodName:\"get\" OR protoPayload.methodName:\"list\") AND NOT protoPayload.authenticationInfo.principalEmail = (\"farrukhhashmi1@google.com\" OR \"hashmisf@gmail.com\") AND resource.type=(\"gce_network\" OR \"gce_subnetwork\")"
 }
-###
-#ALERTS
-###
-resource "google_monitoring_alert_policy" "monitoring_alert_policy" {
-  project      = var.project_id
-  display_name = var.alert_policy_display_name
-  combiner     = "OR"
-  conditions {
-    display_name = var.alert_policy_conditions_display_name
-    condition_threshold {
-      filter     = "metric.type=\"logging.googleapis.com/user/${google_logging_metric.logging_metric.id}\" AND ${var.resource_type}"
-      comparison = "COMPARISON_GT"
-      aggregations {
-        alignment_period     = "60s"
-        cross_series_reducer = "REDUCE_COUNT"
-        per_series_aligner   = "ALIGN_RATE"
-      }
-      duration        = "0s"
-      threshold_value = 0.0
-      trigger {
-        count = 1
-      }
-    }
-  }
-  alert_strategy {
-    auto_close = "1800s"
-  }
-  notification_channels = [var.notification_channel_name]
-  depends_on = [
-    google_logging_metric.logging_metric
-  ]
+
+# Log based alert for IAM roles/permission changes
+module "log_based_alert_iam" {
+  source                               = "../logging-metric-alert"
+  project_id                           = var.project_id
+  notification_channel_names           = var.notification_channel_names
+  metric_name                          = "iam_roles_permission_changed_custom_metric"
+  metric_filter                        = local.iam_metric_filter
+  metric_descriptor_display_name       = "Custom Metric - IAM role/permission changed"
+  alert_policy_display_name            = "IAM role/permission changed"
+  alert_policy_conditions_display_name = "IAM role/permission changed"
+}
+
+# Log based alert for VPC/Subnet changes
+module "log_based_alert_vpc" {
+  source                               = "../logging-metric-alert"
+  project_id                           = var.project_id
+  notification_channel_names           = var.notification_channel_names
+  metric_name                          = "vpc_added_deleted_modified_custom_metric"
+  metric_filter                        = local.vpc_metric_filter
+  metric_descriptor_display_name       = "Custom Metric - VPC added/deleted/modified"
+  alert_policy_display_name            = "VPC added/deleted/modified"
+  alert_policy_conditions_display_name = "VPC added/deleted/modified"
 }

@@ -13,7 +13,7 @@ These sample scripts
 
 **Note: Skip this section if a foundation project to hold terraform state buckets is not required.**
 
-1. Go to `terraform\environments\foundations` folder.
+1. Go to `terraform\environments\foundations` directory.
 2. Comment all lines in `backend.tf` file.
 3. Run `terraform init` command.
 4. Run `terraform plan` command and inspect all the GCP resources that will be created/udpated/deleted.
@@ -25,7 +25,7 @@ These sample scripts
 
 ### Project Factory Setup
 
-1. Go to `terraform\environments\project-factory` folder.
+1. Go to `terraform\environments\project-factory` directory.
 2. If **Foundations Project Setup** section was skipped then comment all lines in `backend.tf` file.
 3. Run `terraform init` command.
 4. Run `terraform plan` command and inspect all the GCP resources that will be created/udpated/deleted.
@@ -51,7 +51,7 @@ These sample scripts
     ```
 
 3. Execute the commands below to create secrets in Secret Manager.
-   * Run `cd terraform\environments\secret-manager` command to go to `terraform\environments\secret-manager` folder.
+   * Run `cd terraform\environments\secret-manager` command to go to `terraform\environments\secret-manager` directory.
    * Run `terraform init` command.
    * Run `terraform plan` command and inspect all the GCP resources that will be created/udpated/destroyed.
    * Run `terraform apply` command to apply changes to GCP.
@@ -87,7 +87,7 @@ These sample scripts
     echo ${GCLB_IP}
     ```
 
-3. Go to `terraform\environments\load-balancer` folder by executing `cd terraform\environments\load-balancer` command.
+3. Go to `terraform\environments\load-balancer` directory by executing `cd terraform\environments\load-balancer` command.
 
 4. Edit the `dns-spec.yaml` file and update ```$PROJECT-ID``` with your project id and ```$GCLB_IP``` with public IP that was created to step # 2.  
 Note: To create a stable, human-friendly mapping to IP address, a public DNS record is required. Cloud Endpoints DNS provides a free Google-managed DNS record for a public IP.

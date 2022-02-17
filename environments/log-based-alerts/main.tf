@@ -17,40 +17,19 @@
 locals {
   project_id                 = "nhi-nci-lb-project-poc-dev"
   notification_email_address = "farrukhhashmi@google.com"
-  iam_metric_filter          = "protoPayload.methodName:\"setIamPolicy\" AND NOT protoPayload.authenticationInfo.principalEmail = (\"farrukhhashmi1@google.com\" OR \"hashmisf@gmail.com\")"
-  vpc_metric_filter          = "(protoPayload.methodName:\"compute.networks\" OR protoPayload.methodName:\"compute.subnetworks\") AND NOT (protoPayload.methodName:\"get\" OR protoPayload.methodName:\"list\") AND NOT protoPayload.authenticationInfo.principalEmail = (\"farrukhhashmi1@google.com\" OR \"hashmisf@gmail.com\") AND resource.type=(\"gce_network\" OR \"gce_subnetwork\")"
 }
 
 #Notification Channel
-resource "google_monitoring_notification_channel" "notification_channel" {
-  display_name = "Security Notification"
-  project      = local.project_id
-  type         = "email"
-  labels = {
-    email_address = local.notification_email_address
-  }
+module "security_notification_channel" {
+  source        = "../../modules/nhi-nci/notification_channel"
+  project_id    = local.project_id
+  display_name  = "Security Notification"
+  email_address = local.notification_email_address
 }
 
 # Log based alert for IAM roles/permission changes
 module "log_based_alert_iam" {
-  source                               = "../../modules/nhi-nci/log-based-alerts"
-  project_id                           = local.project_id
-  notification_channel_name            = google_monitoring_notification_channel.notification_channel.name
-  metric_name                          = "iam_roles_permission_changed_custom_metric"
-  metric_filter                        = local.iam_metric_filter
-  metric_descriptor_display_name       = "Custom Metric - IAM role/permission changed"
-  alert_policy_display_name            = "IAM role/permission changed"
-  alert_policy_conditions_display_name = "IAM role/permission changed"
-}
-
-# Log based alert for VPC/Subnet changes
-module "log_based_alert_vpc" {
-  source                               = "../../modules/nhi-nci/log-based-alerts"
-  project_id                           = local.project_id
-  notification_channel_name            = google_monitoring_notification_channel.notification_channel.name
-  metric_name                          = "vpc_added_deleted_modified_custom_metric"
-  metric_filter                        = local.vpc_metric_filter
-  metric_descriptor_display_name       = "Custom Metric - VPC added/deleted/modified"
-  alert_policy_display_name            = "VPC added/deleted/modified"
-  alert_policy_conditions_display_name = "VPC added/deleted/modified"
+  source                     = "../../modules/nhi-nci/log-based-alerts"
+  project_id                 = local.project_id
+  notification_channel_names = [module.security_notification_channel.name]
 }

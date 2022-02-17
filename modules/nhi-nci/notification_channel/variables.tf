@@ -19,7 +19,12 @@ variable "project_id" {
   type        = string
 }
 
-variable "notification_channel_names" {
-  description = "Notification channel names."
-  type        = list(string)
+variable "display_name" {
+  description = "Display name of notification channel."
+  type        = string
+}
+
+variable "email_address" {
+  description = "Email address where notification will be sent."
+  type        = string
 }
