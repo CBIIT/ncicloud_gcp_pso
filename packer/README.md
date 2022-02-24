@@ -7,7 +7,7 @@ This guide shows you how to create an image factory using Cloud Build and Packer
 * This guide uses Cloud Build default pools. Click [here](https://cloud.google.com/build/docs/private-pools/private-pools-overview#overview_of_default_pools_and_private_pools) to see an overview of default pools and private pools.
 * If Cloud Build private pools are required:
   * Follow links in [Usefull Links](#useful-links) section to create/use Cloud Build private pools.
-  * Set `_OMIT_EXTERNAL_IP` and `_USER_INTERNAL_IP` variables of Cloud Build trigger to `true` in [Create the build trigger for the image factory source repository](#create-the-build-trigger-for-the-image-factory-source-repository) section.
+  * Set `_OMIT_EXTERNAL_IP` and `_USE_INTERNAL_IP` variables of Cloud Build trigger to `true` in [Create the build trigger for the image factory source repository](#create-the-build-trigger-for-the-image-factory-source-repository) section.
 * Packer creates a temporary GCE instance and SSH into instance to customize it for custom image(s). Packer build will fail if a firewall rule to allow SSH for Cloud Build does not exist.
 * You can run commands in this guide using Cloud Shell in the Cloud Console, or you can use gcloud on your local computer if you have installed the Cloud SDK.
 
@@ -39,7 +39,7 @@ In this section, you enable the Google Cloud APIs required for this guide.
 gcloud services enable sourcerepo.googleapis.com \
 cloudapis.googleapis.com compute.googleapis.com \
 servicemanagement.googleapis.com storage-api.googleapis.com \
-cloudbuild.googleapis.com secretmanager.googleapis.com
+cloudbuild.googleapis.com
 ```
 
 ## Give the Cloud Build service account permissions through IAM roles
@@ -85,13 +85,13 @@ In this section, you will download the files to your local environment and initi
 2. Download the tutorial scripts:
 
     ```bash
-    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/cloudbuild.yaml >cloudbuild.yaml
+    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/cloudbuild.yaml >cloudbuild.yaml
 
-    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/main.pkr.hcl >main.pkr.hcl
+    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/main.pkr.hcl >main.pkr.hcl
 
-    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/variables.pkr.hcl >variables.pkr.hcl
+    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/variables.pkr.hcl >variables.pkr.hcl
 
-    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/index.html >index.html
+    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/index.html >index.html
     ```
 
 3. Initialize a Git repository in the working directory:
@@ -112,7 +112,7 @@ gcloud beta builds triggers create cloud-source-repositories \
 --repo=$REPO_NAME \
 --branch-pattern=.* \
 --build-config=cloudbuild.yaml \
---substitutions _IMAGE_FAMILY=nci-image-family-poc,_IMAGE_NAME=nci-debian-poc-image,_NETWORK_PROJECT_ID=$NETWORK_PROJECT,_NETWORK=<Network>,_SUBNETWORK=<SubNetwork>,_ZONE=<Zone>,_PROJECT_ID=$PROJECT,_SOURCE_IMAGE_FAMILY=debian-10,_SSH_USER=packer,_OMIT_EXTERNAL_IP=false,_USER_INTERNAL_IP=false
+--substitutions _IMAGE_FAMILY=nci-image-family-poc,_IMAGE_NAME=nci-debian-poc-image,_NETWORK_PROJECT_ID=$NETWORK_PROJECT,_NETWORK=<Network>,_SUBNETWORK=<SubNetwork>,_ZONE=<Zone>,_PROJECT_ID=$PROJECT,_SOURCE_IMAGE_FAMILY=debian-10,_SSH_USER=packer,_OMIT_EXTERNAL_IP=false,_USE_INTERNAL_IP=false
 ```
 
 ## Add the Packer Cloud Build image to your project
