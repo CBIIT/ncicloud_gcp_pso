@@ -106,6 +106,8 @@ In this section, you will create a webhook/build-trigger to tell Cloud Build to 
 
 Replace `<Network>` with VPC name, `<SubNetwork>` with subnet name and `<Zone>` with GCP Zone, where temporary GCE instance will be created by Packer.
 
+**Note:** Sample terraform code to create Cloud Build Trigger can be found [here](https://github.com/CBIIT/ncicloud_gcp_pso/blob/main/terraform/environments/cloudbuild-trigger/main.tf).
+
 ```bash
 gcloud beta builds triggers create cloud-source-repositories \
 --name=$REPO_NAME-trigger \
