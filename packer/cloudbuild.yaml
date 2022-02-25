@@ -37,5 +37,5 @@ steps:
   - -var
   - omit_external_ip=${_OMIT_EXTERNAL_IP}
   - -var
-  - use_internal_ip=${_USER_INTERNAL_IP}
+  - use_internal_ip=${_USE_INTERNAL_IP}
   - .
