@@ -85,13 +85,13 @@ In this section, you will download the files to your local environment and initi
 2. Download the tutorial scripts:
 
     ```bash
-    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/cloudbuild.yaml >cloudbuild.yaml
+    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/cloudbuild.yaml >cloudbuild.yaml
 
-    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/main.pkr.hcl >main.pkr.hcl
+    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/main.pkr.hcl >main.pkr.hcl
 
-    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/variables.pkr.hcl >variables.pkr.hcl
+    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/variables.pkr.hcl >variables.pkr.hcl
 
-    curl -L https://gpspso-sdt-engagements.googlesource.com/nih-strides/nci-cd-poc/+/refs/heads/master/packer/index.html >index.html
+    curl -L https://raw.githubusercontent.com/CBIIT/ncicloud_gcp_pso/main/packer/index.html >index.html
     ```
 
 3. Initialize a Git repository in the working directory:
