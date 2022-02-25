@@ -1,6 +1,0 @@
-gcloud beta builds triggers create cloud-source-repositories \
---name=$REPO_NAME-trigger \
---repo=$REPO_NAME \
---branch-pattern=.* \
---build-config=cloudbuild.yaml \
---substitutions _IMAGE_FAMILY=nci-image-family-poc,_IMAGE_NAME=nci-debian-poc-image,_NETWORK_PROJECT_ID=$NETWORK_PROJECT,_NETWORK=default,_SUBNETWORK=default,_ZONE=us-central1-c,_PROJECT_ID=$PROJECT,_SOURCE_IMAGE_FAMILY=debian-10,_SSH_USER=packer,_OMIT_EXTERNAL_IP=false,_USER_INTERNAL_IP=false
