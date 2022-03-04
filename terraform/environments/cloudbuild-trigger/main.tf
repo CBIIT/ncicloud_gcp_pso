@@ -4,7 +4,7 @@ locals {
     image_name          = "nci-debian-poc-image"
     network_project_id  = "nci-image-factory-poc2"
     vpc_name            = "default"
-    subetnet_name       = "default"
+    subnet_name         = "default"
     gcp_zone            = "us-central1-b"
     project_id          = "nci-image-factory-poc2"
     source_image_family = "debian-10"
@@ -27,7 +27,7 @@ resource "google_cloudbuild_trigger" "image-factory-trigger" {
     _IMAGE_NAME          = local.image_name
     _NETWORK_PROJECT_ID  = local.network_project_id
     _NETWORK             = local.vpc_name
-    _SUBNETWORK          = local.subetnet_name
+    _SUBNETWORK          = local.subnet_name
     _ZONE                = local.gcp_zone
     _PROJECT_ID          = local.project_id
     _SOURCE_IMAGE_FAMILY = local.source_image_family
